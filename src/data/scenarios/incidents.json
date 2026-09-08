@@ -1,0 +1,379 @@
+[
+  {
+    "id": "evt_lasa_001",
+    "category": "incident",
+    "title": "ยาหน้าตาคล้ายกัน (LASA)",
+    "context": "มีใบสั่งยาให้จ่าย Hydroxyzine แต่บนชั้นวางยา Hydroxyzine อยู่ติดกับ Hydralazine ซึ่งมีชื่อและบรรจุภัณฑ์คล้ายกันมาก คุณหยิบยาขึ้นมาพร้อมจะจ่ายให้ผู้ป่วย",
+    "trigger": {
+      "minDay": 3,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_lasa_001_done"],
+      "probability": 0.6
+    },
+    "choices": [
+      {
+        "id": "check_twice",
+        "text": "ตรวจสอบชื่อยาซ้ำกับเภสัชกรพี่เลี้ยงก่อนจ่าย",
+        "effects": {
+          "stats": { "attentiveness": 10, "confidence": 5 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "ถูกต้อง ตามระเบียบ SOP การจ่ายยา LASA ต้องตรวจสอบซ้ำ (double check) เสมอ การตรวจสอบซ้ำช่วยลดความเสี่ยงจ่ายยาผิดชนิดได้อย่างมาก",
+        "setFlags": ["evt_lasa_001_done"]
+      },
+      {
+        "id": "dispense_directly",
+        "text": "จ่ายยาไปเลยเพราะมั่นใจว่าหยิบถูก",
+        "effects": {
+          "stats": { "attentiveness": -15 },
+          "relationships": { "preceptor": -10 }
+        },
+        "feedback": "เสี่ยงต่อการจ่ายยาผิด อ้างอิงรายงานอุบัติการณ์ที่เคยเกิดขึ้นจริงจากคู่ยา LASA ลักษณะนี้ ควรตรวจสอบซ้ำทุกครั้งไม่ว่าจะมั่นใจแค่ไหน",
+        "setFlags": ["evt_lasa_001_done", "hadNearMiss"]
+      }
+    ],
+    "sourceRef": "รายงานอุบัติการณ์ #2023-XX (anonymized)"
+  },
+  {
+    "id": "evt_handoff_001",
+    "category": "incident",
+    "title": "ส่งเวรไม่ครบข้อมูล",
+    "context": "ใกล้หมดเวรบ่าย พยาบาลหอผู้ป่วยโทรมาถามเรื่องยาที่ปรับขนาดให้ผู้ป่วยรายหนึ่งเมื่อเช้า แต่คุณเห็นว่าในสมุดส่งเวรไม่มีการบันทึกการปรับขนาดยานี้ไว้",
+    "trigger": {
+      "minDay": 4,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_handoff_001_done"],
+      "probability": 0.5
+    },
+    "choices": [
+      {
+        "id": "verify_and_document",
+        "text": "ตรวจสอบคำสั่งแพทย์ล่าสุดและบันทึกข้อมูลลงสมุดส่งเวรให้ครบก่อนตอบพยาบาล",
+        "effects": {
+          "stats": { "attentiveness": 10, "professionalism": 10 },
+          "relationships": { "nurseTeam": 10, "preceptor": 5 }
+        },
+        "feedback": "การตรวจสอบแหล่งข้อมูลต้นทางก่อนตอบ และเติมบันทึกส่งเวรให้ครบถ้วน ช่วยป้องกันความคลาดเคลื่อนในการดูแลผู้ป่วยต่อเนื่อง",
+        "setFlags": ["evt_handoff_001_done"]
+      },
+      {
+        "id": "answer_from_memory",
+        "text": "ตอบพยาบาลไปตามที่จำได้ทันทีโดยไม่ตรวจสอบซ้ำ",
+        "effects": {
+          "stats": { "attentiveness": -10, "professionalism": -10 },
+          "relationships": { "nurseTeam": -10 }
+        },
+        "feedback": "การให้ข้อมูลจากความจำโดยไม่ตรวจสอบเอกสารต้นทาง เป็นสาเหตุที่พบบ่อยของความคลาดเคลื่อนทางยาในการส่งเวร",
+        "setFlags": ["evt_handoff_001_done"]
+      }
+    ],
+    "sourceRef": "รายงานอุบัติการณ์ด้านการสื่อสารส่งเวร (anonymized)"
+  },
+  {
+    "id": "evt_iv_diluent_001",
+    "category": "incident",
+    "title": "สารน้ำผสมยาเคมีบำบัด",
+    "context": "คำสั่งแพทย์ระบุให้ผสมยาเคมีบำบัด Oxaliplatin ในสารน้ำ D5W แต่บริเวณเตรียมยามีทั้งถุง D5W และ NSS วางอยู่ใกล้กัน ปริมาณและลักษณะภายนอกคล้ายกันมาก",
+    "trigger": {
+      "minDay": 4,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_iv_diluent_001_done"],
+      "probability": 0.4
+    },
+    "choices": [
+      {
+        "id": "verify_diluent_against_order",
+        "text": "ตรวจสอบชนิดสารน้ำให้ตรงกับคำสั่งแพทย์ทุกครั้งก่อนผสมยา",
+        "effects": {
+          "stats": { "attentiveness": 10, "academicKnowledge": 10 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "ถูกต้อง Oxaliplatin ไม่คงตัวในสารละลายที่มี Chloride เป็นส่วนประกอบอย่าง NSS การตรวจสอบชนิดสารน้ำให้ตรงกับคำสั่งแพทย์ทุกครั้งช่วยป้องกันความคลาดเคลื่อนที่ส่งผลต่อความคงตัวของยา",
+        "setFlags": ["evt_iv_diluent_001_done"]
+      },
+      {
+        "id": "grab_nearest_bag",
+        "text": "หยิบถุงสารน้ำที่อยู่ใกล้มือที่สุดมาผสมเลยเพราะดูปริมาณเหมือนกัน",
+        "effects": {
+          "stats": { "attentiveness": -15 },
+          "relationships": { "preceptor": -10 }
+        },
+        "feedback": "เคยเกิดเหตุการณ์จริงที่ผสม Oxaliplatin ในสารน้ำ NSS แทน D5W ซึ่งตัวยาไม่คงตัวในสารละลายที่มี Chloride เป็นส่วนประกอบ ต้องตรวจสอบให้ตรงคำสั่งแพทย์ทุกครั้งไม่ว่าจะรีบแค่ไหน",
+        "setFlags": ["evt_iv_diluent_001_done", "hadNearMiss"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน: การผสมยา Oxaliplatin (mFOLFIRI regimen) ผิดชนิดสารน้ำ (anonymized)"
+  },
+  {
+    "id": "evt_similar_dose_001",
+    "category": "incident",
+    "title": "ยาความแรงใกล้เคียงกัน",
+    "context": "ใบสั่งแพทย์ระบุ carvedilol 25 mg แต่บนชั้นวางยามีทั้ง carvedilol 25 mg และ 6.25 mg วางอยู่ใกล้กัน ซองยาหน้าตาคล้ายกันมาก",
+    "trigger": {
+      "minDay": 4,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_similar_dose_001_done"],
+      "probability": 0.45
+    },
+    "choices": [
+      {
+        "id": "read_strength_before_pick",
+        "text": "อ่านความแรงยาบนซองให้ตรงกับใบสั่งแพทย์ก่อนหยิบทุกครั้ง",
+        "effects": {
+          "stats": { "attentiveness": 10 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "ถูกต้อง ยาที่มีหลายความแรงวางใกล้กันเป็นความเสี่ยงที่พบบ่อย ต้องอ่านความแรงบนฉลากให้ตรงกับใบสั่งแพทย์ก่อนหยิบทุกครั้ง",
+        "setFlags": ["evt_similar_dose_001_done"]
+      },
+      {
+        "id": "pick_by_habit",
+        "text": "หยิบยาตามตำแหน่งที่คุ้นเคย โดยไม่อ่านความแรงซ้ำ",
+        "effects": {
+          "stats": { "attentiveness": -15 }
+        },
+        "feedback": "เคยเกิดเหตุการณ์จริงที่จัดยา carvedilol ผิดความแรงจาก 25 mg เป็น 6.25 mg โชคดีที่ตรวจพบและแก้ไขได้ทัน แต่ความเคยชินโดยไม่ตรวจสอบซ้ำเป็นความเสี่ยงที่ต้องระวัง",
+        "setFlags": ["evt_similar_dose_001_done", "hadNearMiss"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน: จัดยา carvedilol ผิดความแรง (anonymized)"
+  },
+  {
+    "id": "evt_drugname_confusion_001",
+    "category": "incident",
+    "title": "ชื่อยาคล้ายกันบนชั้นวาง",
+    "context": "ใบสั่งแพทย์ให้จ่าย vitamin B complex แต่บนชั้นวางยาตำแหน่งใกล้กันมี folic acid ซึ่งบรรจุภัณฑ์หน้าตาคล้ายกันมาก",
+    "trigger": {
+      "minDay": 5,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_drugname_confusion_001_done"],
+      "probability": 0.4
+    },
+    "choices": [
+      {
+        "id": "read_name_carefully",
+        "text": "อ่านชื่อยาบนภาชนะให้ชัดเจนก่อนหยิบทุกครั้งแม้จะรีบ",
+        "effects": {
+          "stats": { "attentiveness": 10 }
+        },
+        "feedback": "ถูกต้อง การอ่านชื่อยาให้ชัดเจนก่อนหยิบทุกครั้งเป็นด่านป้องกันความคลาดเคลื่อนที่สำคัญที่สุด",
+        "setFlags": ["evt_drugname_confusion_001_done"]
+      },
+      {
+        "id": "pick_by_position",
+        "text": "หยิบยาตามตำแหน่งที่คุ้นเคยโดยไม่อ่านชื่อซ้ำ",
+        "effects": {
+          "stats": { "attentiveness": -15 },
+          "relationships": { "patients": -5 }
+        },
+        "feedback": "เคยเกิดเหตุการณ์จริงที่จัดยาผิดจาก vitamin B complex เป็น folic acid เนื่องจากไม่ได้ดูชื่อยาให้ดีก่อนหยิบ",
+        "setFlags": ["evt_drugname_confusion_001_done", "hadNearMiss"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน: จัดยาผิดจาก vitamin B complex เป็น folic acid (anonymized)"
+  },
+  {
+    "id": "evt_wrong_basket_001",
+    "category": "incident",
+    "title": "ป้ายชื่อถูกคน แต่ยาผิดตะกร้า",
+    "context": "คุณเรียกชื่อผู้ป่วยเพื่อจ่ายยา ผู้ป่วยที่มารับเป็นเจ้าของชื่อบนป้ายตะกร้ายาจริง แต่ยาข้างในตะกร้ากลับไม่ตรงกับที่ผู้ป่วยเคยได้รับ",
+    "trigger": {
+      "minDay": 5,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_wrong_basket_001_done"],
+      "probability": 0.4
+    },
+    "choices": [
+      {
+        "id": "confirm_with_patient",
+        "text": "ถามผู้ป่วยยืนยันยาที่เคยได้รับก่อนส่งมอบยาทุกครั้ง",
+        "effects": {
+          "stats": { "attentiveness": 10, "communication": 5 },
+          "relationships": { "patients": 10 }
+        },
+        "feedback": "ถูกต้อง แม้เรียกชื่อถูกคนแล้ว ก็ควรถามยืนยันยาเดิมหรือลักษณะยาที่คุ้นเคยกับผู้ป่วยก่อนส่งมอบทุกครั้ง เพื่อดักจับกรณีป้ายชื่อถูกแต่ยาผิดตะกร้า",
+        "setFlags": ["evt_wrong_basket_001_done"]
+      },
+      {
+        "id": "dispense_since_name_matches",
+        "text": "ส่งมอบยาไปเลยเพราะเรียกชื่อถูกคนแล้ว",
+        "effects": {
+          "stats": { "attentiveness": -15 },
+          "relationships": { "patients": -10 }
+        },
+        "feedback": "เคยเกิดเหตุการณ์จริงที่ป้ายชื่อบนตะกร้าถูกคน แต่ยาข้างในไม่ใช่ของผู้ป่วยรายนั้น เนื่องจากไม่ได้สอบถามยืนยันยาเดิมก่อนส่งมอบ",
+        "setFlags": ["evt_wrong_basket_001_done", "hadNearMiss"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน: เรียกชื่อถูกคนแต่ยาผิดตะกร้า ผู้ป่วย ARV (anonymized)"
+  },
+  {
+    "id": "evt_needle_stick_001",
+    "category": "incident",
+    "title": "เข็มปากกาสาธิตเริ่มงอ",
+    "context": "ระหว่างสอนผู้ป่วยฉีดยาอินซูลินด้วยเข็มปากกาสาธิต คุณสังเกตว่าเข็มที่ใช้สอนมาหลายครั้งเริ่มงอเล็กน้อยจากการใช้ซ้ำ",
+    "trigger": {
+      "minDay": 5,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_needle_stick_001_done"],
+      "probability": 0.35
+    },
+    "choices": [
+      {
+        "id": "replace_needle",
+        "text": "หยุดสาธิตชั่วคราวและเปลี่ยนหัวเข็มใหม่ก่อนสอนต่อ",
+        "effects": {
+          "stats": { "attentiveness": 10, "professionalism": 5 }
+        },
+        "feedback": "ถูกต้อง เข็มที่งอจากการใช้ซ้ำเพิ่มความเสี่ยงเข็มทิ่มตำทั้งต่อผู้สอนและผู้ป่วย ควรเปลี่ยนหัวเข็มใหม่ทันทีที่สังเกตเห็นความผิดปกติ",
+        "setFlags": ["evt_needle_stick_001_done"]
+      },
+      {
+        "id": "continue_with_bent_needle",
+        "text": "ใช้เข็มเดิมสาธิตต่อเพราะยังใช้งานได้อยู่ ไม่อยากเสียเวลาเปลี่ยน",
+        "effects": {
+          "stats": { "attentiveness": -15 }
+        },
+        "feedback": "เคยเกิดเหตุการณ์จริงที่ถูกเข็มปากกาสาธิตที่งอจากการใช้ซ้ำทิ่มมือ ควรเปลี่ยนหัวเข็มทันทีที่สังเกตเห็นความผิดปกติเพื่อความปลอดภัยของทุกฝ่าย",
+        "setFlags": ["evt_needle_stick_001_done"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน: เข็มปากกาสาธิตอินซูลินทิ่มมือ (anonymized)"
+  },
+  {
+    "id": "evt_chemo_spill_001",
+    "category": "incident",
+    "title": "รอยร้าวบนขวดยาเคมีบำบัด",
+    "context": "ก่อนเปิดใช้ยาเคมีบำบัดเพื่อเตรียมยา คุณสังเกตเห็นรอยร้าวเล็ก ๆ ที่ตัวขวดยา",
+    "trigger": {
+      "minDay": 6,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_chemo_spill_001_done"],
+      "probability": 0.35
+    },
+    "choices": [
+      {
+        "id": "stop_and_report",
+        "text": "หยุดและแจ้งเภสัชกรพี่เลี้ยงทันทีเพื่อทิ้งขวดที่ชำรุดและเปลี่ยนอุปกรณ์ป้องกันใหม่",
+        "effects": {
+          "stats": { "attentiveness": 10, "professionalism": 10 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "ถูกต้อง ขวดยาเคมีบำบัดที่มีรอยร้าวเสี่ยงต่อการรั่วซึมและปนเปื้อน ต้องหยุดใช้ทันทีและแจ้งเภสัชกรพี่เลี้ยงเพื่อจัดการอย่างปลอดภัย",
+        "setFlags": ["evt_chemo_spill_001_done"]
+      },
+      {
+        "id": "use_anyway",
+        "text": "เปิดใช้ต่อเพราะยาดูเหมือนยังอยู่ครบ ไม่อยากทำให้ยาขาด",
+        "effects": {
+          "stats": { "attentiveness": -15, "professionalism": -10 },
+          "relationships": { "preceptor": -10 }
+        },
+        "feedback": "เคยเกิดเหตุการณ์จริงที่ขวดยาเคมีบำบัดมีรอยร้าวทำให้ยารั่วออกมาเปื้อนถุงมือระหว่างเตรียมยา ยาเคมีบำบัดเป็นอันตรายต่อผู้สัมผัสโดยตรง ต้องหยุดใช้ทันทีเมื่อพบความผิดปกติ",
+        "setFlags": ["evt_chemo_spill_001_done"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน: ขวดยาเคมีบำบัดมีรอยร้าวก่อนเตรียมยา (anonymized)"
+  },
+  {
+    "id": "evt_forget_inform_warfarin_001",
+    "category": "incident",
+    "title": "ลืมแจ้งผู้ป่วยให้หยุดยา",
+    "context": "แพทย์สั่ง hold warfarin ให้ผู้ป่วยรายหนึ่ง แต่คุณเพิ่งนึกขึ้นได้ว่ายังไม่ได้แจ้งผู้ป่วย ซึ่งเพิ่งเดินออกจากคลินิกวาร์ฟารินไปแล้ว",
+    "trigger": {
+      "minDay": 6,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_forget_inform_warfarin_001_done"],
+      "probability": 0.35
+    },
+    "choices": [
+      {
+        "id": "call_patient_immediately",
+        "text": "รีบโทรศัพท์แจ้งผู้ป่วยทันทีที่นึกขึ้นได้ในวันนั้น",
+        "effects": {
+          "stats": { "professionalism": 10, "attentiveness": 5 },
+          "relationships": { "patients": 10, "preceptor": 5 }
+        },
+        "feedback": "ถูกต้อง การหยุดยา warfarin มีผลต่อความปลอดภัยของผู้ป่วยโดยตรง ต้องรีบแจ้งทันทีที่นึกขึ้นได้ ไม่ควรรอถึงนัดครั้งถัดไป",
+        "setFlags": ["evt_forget_inform_warfarin_001_done"]
+      },
+      {
+        "id": "wait_next_visit",
+        "text": "รอแจ้งในนัดครั้งถัดไปเพราะคิดว่าคงไม่เป็นไรมาก",
+        "effects": {
+          "stats": { "professionalism": -15 },
+          "relationships": { "patients": -10 }
+        },
+        "feedback": "การไม่แจ้งผู้ป่วยให้หยุดยา warfarin ตามคำสั่งแพทย์ทันทีอาจก่อให้เกิดอันตรายร้ายแรง เคยเกิดเหตุการณ์จริงที่ต้องรีบโทรตามแจ้งผู้ป่วยในวันเดียวกัน",
+        "setFlags": ["evt_forget_inform_warfarin_001_done"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน: ลืมแจ้งผู้ป่วย hold warfarin (anonymized)"
+  },
+  {
+    "id": "evt_traffic_safety_001",
+    "category": "incident",
+    "title": "ฝนตกจะขี่มอเตอร์ไซค์ไปหอพัก",
+    "context": "หลังเลิกงาน ฝนเริ่มตกโปรยปรายและถนนลื่นเล็กน้อย คุณต้องขี่มอเตอร์ไซค์กลับหอพักซึ่งอยู่ไม่ไกลจากโรงพยาบาล",
+    "trigger": {
+      "minDay": 4,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_traffic_safety_001_done"],
+      "probability": 0.3
+    },
+    "choices": [
+      {
+        "id": "wear_helmet_carefully",
+        "text": "สวมหมวกกันน็อค เปิดไฟหน้ารถ และขับด้วยความระมัดระวังเป็นพิเศษ",
+        "effects": {
+          "stats": { "attentiveness": 5, "confidence": 5 }
+        },
+        "feedback": "ถูกต้อง ควรขับขี่ด้วยความระมัดระวังที่สุด สวมหมวกกันน็อคทุกครั้งแม้ระยะทางจะใกล้ ยิ่งถนนลื่นยิ่งต้องระวังเป็นพิเศษ",
+        "setFlags": ["evt_traffic_safety_001_done"]
+      },
+      {
+        "id": "rush_without_care",
+        "text": "รีบขับแบบปกติเพราะระยะทางใกล้ ไม่อยากเปียกฝนนาน",
+        "effects": {
+          "stats": { "attentiveness": -10, "confidence": -5 }
+        },
+        "feedback": "เคยมีรายงานอุบัติเหตุจากการขี่รถจักรยานยนต์ของนักศึกษาฝึกงานหลายครั้ง เช่น เบรกกะทันหันแล้วล้ม หรือชนขณะข้ามถนน ควรระมัดระวังเป็นพิเศษในสภาพถนนที่ไม่ปกติ",
+        "setFlags": ["evt_traffic_safety_001_done"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน หมวดความปลอดภัย: อุบัติเหตุจราจร (anonymized)"
+  },
+  {
+    "id": "evt_dorm_security_001",
+    "category": "incident",
+    "title": "มีคนพยายามงัดหน้าต่างหอพัก",
+    "context": "ดึกคืนหนึ่งที่หอพัก คุณได้ยินเสียงผิดปกติที่หน้าต่างห้อง เมื่อมองไปเห็นมีมือคนสอดผ่านมุ้งลวดพยายามงัดหรือขโมยของในห้อง",
+    "trigger": {
+      "minDay": 5,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_dorm_security_001_done"],
+      "probability": 0.3
+    },
+    "choices": [
+      {
+        "id": "alert_and_lock",
+        "text": "รีบส่งเสียง ล็อกห้องให้แน่นหนา และแจ้ง รปภ. หรือเพื่อนที่หอพักทันที",
+        "effects": {
+          "stats": { "attentiveness": 5, "confidence": 10 }
+        },
+        "feedback": "ถูกต้อง เคยมีรายงานจริงว่ามีการคุกคามที่หอพักโดยบุคคลสติไม่ดี และมีการตั้งใจสอดมือเข้าหน้าต่างมุ้งลวดเพื่อขโมยของ ควรตั้งอยู่ในความไม่ประมาท เก็บทรัพย์สินให้มิดชิด และแจ้งเจ้าหน้าที่ทันทีเมื่อพบเหตุผิดปกติ",
+        "setFlags": ["evt_dorm_security_001_done"]
+      },
+      {
+        "id": "ignore_and_sleep",
+        "text": "คิดว่าคงเป็นแค่แมวหรือลมพัด เลยนอนต่อเฉย ๆ ไม่แจ้งใคร",
+        "effects": {
+          "stats": { "attentiveness": -10, "confidence": -10 }
+        },
+        "feedback": "เคยมีรายงานจริงว่ามีการคุกคามที่หอพักโดยบุคคลสติไม่ดี และมีการตั้งใจสอดมือเข้าหน้าต่างมุ้งลวดเพื่อขโมยของ การไม่ระวังตัวหรือไม่แจ้งเหตุผิดปกติอาจทำให้อันตรายลุกลามได้",
+        "setFlags": ["evt_dorm_security_001_done"]
+      }
+    ],
+    "sourceRef": "ความเสี่ยงที่เคยรายงาน หมวดความปลอดภัย: การคุกคามและความปลอดภัยที่หอพัก (anonymized)"
+  }
+]

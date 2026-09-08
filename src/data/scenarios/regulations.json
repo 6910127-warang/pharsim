@@ -1,0 +1,171 @@
+[
+  {
+    "id": "evt_punctuality_001",
+    "category": "regulation",
+    "title": "ตื่นสายเล็กน้อย",
+    "context": "เมื่อคืนคุณนอนดึกเพื่อทำรายงาน เช้านี้ตื่นสายกว่าปกติ คาดว่าจะไปถึงห้องยาประมาณ 8.10 น.",
+    "trigger": {
+      "minDay": 2,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_punctuality_001_done"],
+      "probability": 0.4
+    },
+    "choices": [
+      {
+        "id": "call_ahead",
+        "text": "รีบโทรแจ้งเภสัชกรพี่เลี้ยงล่วงหน้าว่าจะถึงสายเล็กน้อย",
+        "effects": {
+          "stats": { "professionalism": 10 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "การแจ้งล่วงหน้าเมื่อรู้ตัวว่าจะมาไม่ทันเวลาแสดงความรับผิดชอบ แม้ระเบียบจะกำหนดห้ามมาสายก็ตาม",
+        "setFlags": ["evt_punctuality_001_done"]
+      },
+      {
+        "id": "say_nothing",
+        "text": "รีบเดินทางไปเฉย ๆ ไม่แจ้งใคร คิดว่าคงไม่มีใครสังเกต",
+        "effects": {
+          "stats": { "professionalism": -15 },
+          "relationships": { "preceptor": -10 }
+        },
+        "feedback": "ผิดข้อตกลงชัดเจน เวลาปฏิบัติงานคือ 8.00 น. ห้ามมาสาย และต้องพร้อมปฏิบัติงานไม่เกิน 8.15 น. การไม่แจ้งล่วงหน้ายิ่งลดความน่าเชื่อถือ",
+        "setFlags": ["evt_punctuality_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดพฤติกรรม: เวลาในการปฏิบัติงาน"
+  },
+  {
+    "id": "evt_sick_leave_001",
+    "category": "regulation",
+    "title": "ตื่นมามีไข้และปวดท้อง",
+    "context": "เช้านี้คุณตื่นมามีไข้สูงและปวดท้อง คาดว่าอาจเกิดจากอาหารที่กินเมื่อคืน ไม่สามารถไปฝึกงานได้ตามปกติ",
+    "trigger": {
+      "minDay": 3,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_sick_leave_001_done"],
+      "probability": 0.35
+    },
+    "choices": [
+      {
+        "id": "call_preceptor_directly",
+        "text": "โทรศัพท์แจ้งเภสัชกรพี่เลี้ยงด้วยตัวเองก่อนไปพบแพทย์ แล้วเขียนใบลาป่วยส่งในวันที่กลับมา",
+        "effects": {
+          "stats": { "professionalism": 10 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "ถูกต้องตามระเบียบ การลาป่วยต้องโทรศัพท์แจ้งเภสัชกรพี่เลี้ยงด้วยตัวเองก่อนเสมอ ห้ามฝากเพื่อนมาบอกอย่างเดียว",
+        "setFlags": ["evt_sick_leave_001_done"]
+      },
+      {
+        "id": "ask_friend_to_tell",
+        "text": "ฝากเพื่อนที่ฝึกด้วยกันบอกพี่เภสัชกรแทน แล้วนอนพักที่หอ",
+        "effects": {
+          "stats": { "professionalism": -10 },
+          "relationships": { "preceptor": -10 }
+        },
+        "feedback": "ผิดระเบียบ การลาป่วยต้องแจ้งด้วยตัวเองก่อนเสมอ การฝากคนอื่นบอกแทนอาจทำให้ข้อมูลอาการคลาดเคลื่อนและดูขาดความรับผิดชอบ",
+        "setFlags": ["evt_sick_leave_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดพฤติกรรม: การลาป่วย ลากิจ"
+  },
+  {
+    "id": "evt_no_social_media_001",
+    "category": "regulation",
+    "title": "ช่วงเวลาว่างระหว่างรองานตรวจ",
+    "context": "งานที่ได้รับมอบหมายเสร็จแล้ว ระหว่างรอเภสัชกรพี่เลี้ยงตรวจงาน มีเวลาว่างอยู่หน้าคอมพิวเตอร์เครื่องหนึ่งในห้องปฏิบัติงาน",
+    "trigger": {
+      "minDay": 3,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_no_social_media_001_done"],
+      "probability": 0.5
+    },
+    "choices": [
+      {
+        "id": "review_academic_material",
+        "text": "เปิดอ่านเอกสารวิชาการหรือทบทวนความรู้ที่เกี่ยวข้องกับงานที่ทำอยู่",
+        "effects": {
+          "stats": { "academicKnowledge": 10, "professionalism": 5 }
+        },
+        "feedback": "ดี การฝึกงานเน้น active learning ควรใช้อินเทอร์เน็ตเพื่อการศึกษาและเตรียมความรู้ให้พร้อมนำไปใช้จริง",
+        "setFlags": ["evt_no_social_media_001_done"]
+      },
+      {
+        "id": "browse_social_media",
+        "text": "เปิด Facebook หรือ Line เล่นเพราะยังไม่มีงานให้ทำตอนนี้",
+        "effects": {
+          "stats": { "professionalism": -15 }
+        },
+        "feedback": "ผิดข้อตกลงชัดเจน ห้ามเล่น social network หรือ online chat ในเวลาฝึกงานเด็ดขาด ให้ใช้อินเทอร์เน็ตเพื่อการศึกษาเท่านั้น",
+        "setFlags": ["evt_no_social_media_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดหน้าที่และความรับผิดชอบ"
+  },
+  {
+    "id": "evt_presentation_prep_001",
+    "category": "regulation",
+    "title": "เตรียมนำเสนอเคสผู้ป่วย",
+    "context": "ใกล้ถึงกำหนดนำเสนอเคสผู้ป่วยหน้าห้องประชุมแล้ว แต่เนื้อหาที่เตรียมมายาวและละเอียดมาก ยังไม่ได้ตัดให้พอดีกับเวลาที่กำหนด",
+    "trigger": {
+      "minDay": 5,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_presentation_prep_001_done"],
+      "probability": 0.4
+    },
+    "choices": [
+      {
+        "id": "trim_to_essentials",
+        "text": "รีบตัดเนื้อหาให้กระชับ ตรงประเด็นตามหัวข้อในแบบประเมินของคณะ",
+        "effects": {
+          "stats": { "communication": 10, "confidence": 5 }
+        },
+        "feedback": "ถูกต้อง ควรนำเสนอให้เสร็จในเวลาที่กำหนด ไม่เยิ่นเย้อ และอ่านแบบประเมินโดยละเอียดเพื่อนำเสนอได้ตรงประเด็น",
+        "setFlags": ["evt_presentation_prep_001_done"]
+      },
+      {
+        "id": "present_everything",
+        "text": "นำเสนอไปตามที่เตรียมมาทั้งหมดแม้จะเกินเวลาที่กำหนด",
+        "effects": {
+          "stats": { "communication": -10 }
+        },
+        "feedback": "การนำเสนอที่เยิ่นเย้อเกินเวลาทำให้ไม่ได้ใจความ และอาจถูกหักคะแนนตามเกณฑ์การประเมินของคณะ",
+        "setFlags": ["evt_presentation_prep_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดหน้าที่และความรับผิดชอบ: การนำเสนองาน"
+  },
+  {
+    "id": "evt_pharmacy_club_001",
+    "category": "regulation",
+    "title": "กิจกรรม Pharmacy Case Conference",
+    "context": "มีประกาศกิจกรรม Pharmacy Case Conference ช่วงเที่ยง แต่คุณมีงานที่ได้รับมอบหมายค้างอยู่พอดี",
+    "trigger": {
+      "minDay": 6,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_pharmacy_club_001_done"],
+      "probability": 0.4
+    },
+    "choices": [
+      {
+        "id": "finish_then_join",
+        "text": "รีบจัดการงานที่รับผิดชอบให้เสร็จเรียบร้อยก่อน แล้วจึงเข้าร่วมฟัง",
+        "effects": {
+          "stats": { "professionalism": 10, "academicKnowledge": 5 }
+        },
+        "feedback": "ถูกต้อง ขอให้รีบจัดการงานที่รับผิดชอบให้เสร็จเรียบร้อยก่อนแล้วจึงเข้าฟังกิจกรรมของกลุ่มงานได้",
+        "setFlags": ["evt_pharmacy_club_001_done"]
+      },
+      {
+        "id": "skip_work_join_first",
+        "text": "ข้ามงานที่ค้างไปฟังกิจกรรมก่อนเพราะน่าสนใจกว่า",
+        "effects": {
+          "stats": { "professionalism": -10 }
+        },
+        "feedback": "งานที่ได้รับมอบหมายควรทำให้เสร็จก่อนเสมอ การละทิ้งงานค้างไปทำกิจกรรมอื่นก่อนสะท้อนความไม่รับผิดชอบ",
+        "setFlags": ["evt_pharmacy_club_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดหน้าที่และความรับผิดชอบ: การเข้าร่วมกิจกรรมพิเศษของแหล่งฝึก"
+  }
+]

@@ -1,0 +1,180 @@
+[
+  {
+    "id": "evt_onboarding_001",
+    "category": "onboarding",
+    "title": "วันแรกที่ห้องยา",
+    "context": "คุณมาถึงห้องยาในเช้าวันแรกของการฝึกงาน เภสัชกรพี่เลี้ยงกำลังยุ่งอยู่กับคิวยาที่ยาวเป็นหางว่าว แต่ก็เงยหน้ามาทักทายคุณ",
+    "trigger": {
+      "minDay": 1,
+      "maxDay": 1,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_onboarding_001_done"],
+      "probability": 1
+    },
+    "choices": [
+      {
+        "id": "introduce_and_offer_help",
+        "text": "แนะนำตัว และถามว่ามีอะไรให้ช่วยได้บ้างระหว่างที่คิวยังยาว",
+        "effects": {
+          "stats": { "communication": 10, "confidence": 5 },
+          "relationships": { "preceptor": 10 }
+        },
+        "feedback": "การแสดงความกระตือรือร้นตั้งแต่วันแรกช่วยสร้างความประทับใจที่ดี และทำให้พี่เลี้ยงกล้าที่จะมอบหมายงานให้มากขึ้น",
+        "setFlags": ["evt_onboarding_001_done"]
+      },
+      {
+        "id": "wait_quietly",
+        "text": "ยืนรอเงียบ ๆ จนกว่าพี่เลี้ยงจะว่าง",
+        "effects": {
+          "stats": { "confidence": -5 },
+          "relationships": { "preceptor": -2 }
+        },
+        "feedback": "การรอเฉย ๆ อาจดูปลอดภัย แต่พลาดโอกาสสร้างความประทับใจแรกและเรียนรู้งานตั้งแต่ต้น",
+        "setFlags": ["evt_onboarding_001_done"]
+      }
+    ],
+    "sourceRef": "แนวทางปฐมนิเทศนักศึกษาฝึกงาน ฝ่ายเภสัชกรรม"
+  },
+  {
+    "id": "evt_dress_code_001",
+    "category": "onboarding",
+    "title": "เลือกรองเท้าไปฝึกงาน",
+    "context": "เช้าวันแรก คุณกำลังเลือกรองเท้าจะใส่ไปโรงพยาบาล มีรองเท้าคัทชูหุ้มส้นที่ดูเป็นทางการ กับรองเท้าแตะแบบมีสายรัดที่ใส่สบายกว่ามากในอากาศร้อน",
+    "trigger": {
+      "minDay": 1,
+      "maxDay": 2,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_dress_code_001_done"],
+      "probability": 0.8
+    },
+    "choices": [
+      {
+        "id": "wear_closed_shoes",
+        "text": "ใส่รองเท้าหุ้มส้นตามระเบียบการแต่งกาย",
+        "effects": {
+          "stats": { "professionalism": 10 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "ถูกต้อง ระเบียบกำหนดให้ใส่รองเท้าหุ้มส้นหรือมีสายรัด ห้ามใส่รองเท้าแตะเด็ดขาด (ยกเว้นกรณีเท้าบาดเจ็บ)",
+        "setFlags": ["evt_dress_code_001_done"]
+      },
+      {
+        "id": "wear_sandals",
+        "text": "ใส่รองเท้าแตะไปก่อน เผื่อพี่เลี้ยงไม่ว่าอะไร",
+        "effects": {
+          "stats": { "professionalism": -15 },
+          "relationships": { "preceptor": -5 }
+        },
+        "feedback": "ผิดระเบียบการแต่งกายของแหล่งฝึกอย่างชัดเจน การแต่งกายไม่เหมาะสมตั้งแต่วันแรกกระทบภาพลักษณ์ความเป็นวิชาชีพ",
+        "setFlags": ["evt_dress_code_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดพฤติกรรม: การแต่งกาย"
+  },
+  {
+    "id": "evt_greeting_wai_001",
+    "category": "onboarding",
+    "title": "ไหว้พี่ ๆ กี่ครั้งดี",
+    "context": "ตลอดเช้าวันนี้คุณเดินสวนกับพี่เภสัชกรคนเดิมหลายรอบระหว่างไปมาส่งเอกสาร แต่ละครั้งคุณลังเลว่าควรไหว้ทักทายซ้ำอีกหรือไม่",
+    "trigger": {
+      "minDay": 1,
+      "maxDay": 3,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_greeting_wai_001_done"],
+      "probability": 0.7
+    },
+    "choices": [
+      {
+        "id": "wai_once_then_smile",
+        "text": "ไหว้ทักทายครั้งแรกของวัน ครั้งต่อไปที่เจอกันใช้การยิ้มและทักทายด้วยคำพูดแทน",
+        "effects": {
+          "stats": { "communication": 10 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "ถูกต้อง หากจะไหว้พี่ ให้ไหว้วันละครั้งพอ การไหว้ซ้ำบ่อยเกินไปอาจดูขัดเขินทั้งสองฝ่าย",
+        "setFlags": ["evt_greeting_wai_001_done"]
+      },
+      {
+        "id": "wai_every_time",
+        "text": "ไหว้ทุกครั้งที่เดินสวนกันเพื่อความสุภาพ",
+        "effects": {
+          "stats": { "communication": -5 }
+        },
+        "feedback": "ตามแนวทางของแหล่งฝึก การไหว้ทุกครั้งที่เจอกันซ้ำ ๆ ในหนึ่งวันไม่จำเป็น ไหว้วันละครั้งก็เพียงพอแล้ว",
+        "setFlags": ["evt_greeting_wai_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดพฤติกรรม: การมีสัมมาคารวะและมนุษยสัมพันธ์"
+  },
+  {
+    "id": "evt_workspace_room_001",
+    "category": "onboarding",
+    "title": "พี่ขอใช้คอมพิวเตอร์ก่อน",
+    "context": "คุณกำลังใช้คอมพิวเตอร์ในห้องปฏิบัติงานค้นข้อมูลยาอยู่ พอดีมีพี่เภสัชกรเดินมาบอกว่าต้องการใช้เครื่องนี้ด่วนเพื่อคีย์ข้อมูลผู้ป่วย",
+    "trigger": {
+      "minDay": 2,
+      "maxDay": 4,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_workspace_room_001_done"],
+      "probability": 0.6
+    },
+    "choices": [
+      {
+        "id": "yield_computer_quickly",
+        "text": "รีบจัดการงานที่ทำค้างให้เสร็จโดยเร็วแล้วสละเครื่องให้พี่ใช้ก่อน",
+        "effects": {
+          "stats": { "professionalism": 10 },
+          "relationships": { "preceptor": 5, "nurseTeam": 5 }
+        },
+        "feedback": "ถูกต้อง เมื่อพี่ต้องการใช้ห้องหรือคอมพิวเตอร์ ให้รีบจัดการสิ่งที่ทำค้างอยู่โดยเร็วเพื่อให้พี่ใช้ก่อนเสมอ",
+        "setFlags": ["evt_workspace_room_001_done"]
+      },
+      {
+        "id": "ask_to_finish_first",
+        "text": "ขอเวลาทำงานของตัวเองให้เสร็จก่อนแล้วค่อยให้พี่ใช้",
+        "effects": {
+          "stats": { "professionalism": -10 },
+          "relationships": { "preceptor": -10 }
+        },
+        "feedback": "ไม่เหมาะสม นักศึกษาฝึกงานควรให้ความสำคัญกับงานของบุคลากรก่อนเสมอเมื่อมีการร้องขอใช้ทรัพยากรร่วมที่จำกัด",
+        "setFlags": ["evt_workspace_room_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดพฤติกรรม: ความมีน้ำใจ ความเกรงใจ"
+  },
+  {
+    "id": "evt_phone_answer_001",
+    "category": "onboarding",
+    "title": "โทรศัพท์ในห้องยาดังขึ้น",
+    "context": "พี่เภสัชกรทุกคนกำลังยุ่งอยู่กับผู้ป่วยที่เคาน์เตอร์ โทรศัพท์ของห้องยาดังขึ้นไม่มีใครว่างรับ",
+    "trigger": {
+      "minDay": 2,
+      "maxDay": 5,
+      "requiredFlags": [],
+      "excludedFlags": ["evt_phone_answer_001_done"],
+      "probability": 0.5
+    },
+    "choices": [
+      {
+        "id": "answer_formally",
+        "text": "รับสายแล้วพูดตามลำดับ: ทักทาย บอกชื่อหน่วยงาน แล้วแนะนำตัวว่าเป็นนักศึกษาฝึกงาน",
+        "effects": {
+          "stats": { "communication": 10, "professionalism": 5 },
+          "relationships": { "preceptor": 5 }
+        },
+        "feedback": "ถูกต้อง การรับโทรศัพท์ควรพูดด้วยน้ำเสียงนุ่มนวล ทักทาย บอกชื่อหน่วยงาน และแนะนำตัวผู้รับสายตามลำดับ",
+        "setFlags": ["evt_phone_answer_001_done"]
+      },
+      {
+        "id": "answer_casually",
+        "text": "รับสายแบบไม่เป็นทางการ \"ฮัลโหล ใครพูดคะ\"",
+        "effects": {
+          "stats": { "professionalism": -10 }
+        },
+        "feedback": "การรับโทรศัพท์ในหน่วยงานควรพูดอย่างเป็นทางการและมีขั้นตอน เพื่อรักษาภาพลักษณ์ของกลุ่มงานและโรงพยาบาล",
+        "setFlags": ["evt_phone_answer_001_done"]
+      }
+    ],
+    "sourceRef": "ข้อตกลงฝึกปฏิบัติงาน หมวดหน้าที่และความรับผิดชอบ: การรับโทรศัพท์"
+  }
+]
