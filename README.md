@@ -1,5 +1,7 @@
 # นักศึกษาฝึกงานเภสัชกรรม (รพ.เชียงรายประชานุเคราะห์)
 
+Repo: https://github.com/6910127-warang/pharsim
+
 Life-sim / visual novel เชิงตัดสินใจ สอนระเบียบ ข้อตกลง และความเสี่ยงที่เคยเกิดขึ้นจริง
 ผ่านสถานการณ์จำลองสำหรับนักศึกษาฝึกงานเภสัชกรรม ดูรายละเอียดสถาปัตยกรรมเต็มได้ที่
 [`pharmacy-internship-sim-architecture.md`](./pharmacy-internship-sim-architecture.md)
